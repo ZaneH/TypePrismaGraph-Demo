@@ -1,0 +1,61 @@
+{
+  "version": "0.2.50",
+  "steps": [
+    {
+      "stepType": "UpdateField",
+      "model": "ChatMessage",
+      "name": "chat",
+      "type": {
+        "Relation": {
+          "to": "Chat",
+          "to_fields": [
+            "id"
+          ],
+          "name": "ChatMessage",
+          "on_delete": "None"
+        }
+      }
+    },
+    {
+      "stepType": "UpdateField",
+      "model": "Chat",
+      "name": "messages",
+      "type": {
+        "Relation": {
+          "to": "ChatMessage",
+          "to_fields": [],
+          "name": "ChatMessage",
+          "on_delete": "None"
+        }
+      }
+    },
+    {
+      "stepType": "UpdateField",
+      "model": "ChatMessage",
+      "name": "chat",
+      "type": {
+        "Relation": {
+          "to": "Chat",
+          "to_fields": [
+            "id"
+          ],
+          "name": "ChatToChatMessage",
+          "on_delete": "None"
+        }
+      }
+    },
+    {
+      "stepType": "UpdateField",
+      "model": "Chat",
+      "name": "messages",
+      "type": {
+        "Relation": {
+          "to": "ChatMessage",
+          "to_fields": [],
+          "name": "ChatToChatMessage",
+          "on_delete": "None"
+        }
+      }
+    }
+  ]
+}

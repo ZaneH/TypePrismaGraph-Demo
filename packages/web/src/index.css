@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    font-family: 'Roboto';
+}
+
+.tab {
+    cursor: pointer;
+
+    color: white;
+
+    height: 100%;
+    width: 80%;
+    padding: 10px;
+    border-radius: 1000px;
+
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.tab.active {
+    color: black;
+
+    background-color: white;
+}

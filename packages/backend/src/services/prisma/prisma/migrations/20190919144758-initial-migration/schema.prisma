@@ -1,0 +1,68 @@
+generator photon {
+  provider = "photonjs"
+}
+
+generator nexus_prisma {
+  provider = "nexus-prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://prisma:prisma@localhost:5432/prisma?schema=phoenix_db"
+}
+
+model AuthPayload {
+  id    String @default(cuid()) @id
+  token String
+  user  User
+}
+
+model Post {
+  id        String   @default(cuid()) @id
+  author    User
+  content   String
+  createdAt DateTime @default(now())
+  published Boolean  @default(value: false)
+  title     String
+  updatedAt DateTime @updatedAt
+}
+
+enum MessageType {
+  LOCATION
+  PICTURE
+  TEXT
+}
+
+model ChatMessage {
+  id        String      @default(cuid()) @id
+  chat      Chat
+  content   String
+  createdAt DateTime    @default(now())
+  sender    User
+  type      MessageType
+}
+
+model Chat {
+  id        String        @default(cuid()) @id
+  createdAt DateTime      @default(now())
+  members   User[]        @relation(name: "ChatMembers")
+  messages  ChatMessage[]
+  name      String
+  owner     User          @relation(name: "ChatAdmin")
+  picture   String
+  updatedAt DateTime      @updatedAt
+}
+
+model User {
+  id         String   @default(cuid()) @id
+  chats      Chat[]   @relation(name: "ChatMembers")
+  chatsOwned Chat[]   @relation(name: "ChatAdmin")
+  createdAt  DateTime @default(now())
+  email      String   @unique
+  name       String
+  password   String
+  picture    String
+  posts      Post[]
+  updatedAt  DateTime @updatedAt
+  username   String   @unique
+}
