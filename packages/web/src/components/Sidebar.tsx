@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 interface SidebarProps {
-  index: number
   body: object
 }
 
@@ -44,7 +43,6 @@ export default class Sidebar extends React.Component<SidebarProps> {
   }
 
   static propTypes = {
-    index: PropTypes.number.isRequired,
     body: PropTypes.object,
   }
 }

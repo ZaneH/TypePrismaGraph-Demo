@@ -14,6 +14,8 @@ import CreateFeedPostForm from './CreateFeedPostForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons'
 
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+
 const PlusButton = styled.div`
   width: 60px;
   height: 60px;
@@ -47,7 +49,7 @@ interface SidebarWrapperState {
   toName: string
 }
 
-export default class SidebarWrapper extends React.Component<null, SidebarWrapperState> {
+class SidebarWrapper extends React.Component<RouteComponentProps, SidebarWrapperState> {
   constructor(props: any) {
     super(props)
 
@@ -88,6 +90,13 @@ export default class SidebarWrapper extends React.Component<null, SidebarWrapper
     }
   }
 
+  static getDerivedStateFromProps(props: any, state: any) {
+    if (!!state.toName) {
+    }
+
+    return null
+  }
+
   render() {
     switch (this.state.index) {
       case 0:
@@ -100,11 +109,9 @@ export default class SidebarWrapper extends React.Component<null, SidebarWrapper
                 post={this.state.visibleFeedPost}
               />
             }
-            index={this.state.index}
           >
             <SidebarTabMenu
               onChange={(i: number) => this.setState({ index: i, isAddingFeedPost: false, isAddingChat: false })}
-              index={this.state.index}
             />
             <PlusButton onClick={() => this.feedPlusButtonPressed()}>
               <FontAwesomeIcon icon={this.state.isAddingFeedPost ? faTimes : faPlus} />
@@ -122,15 +129,13 @@ export default class SidebarWrapper extends React.Component<null, SidebarWrapper
             body={
               <ChatThreadPage
                 isAddingChat={this.state.isAddingChat}
-                newChat={<CreateChatForm to={this.state.toName} />}
+                newChat={<CreateChatForm to={this.state.toName || ''} />}
                 chat={this.state.visibleChat}
               />
             }
-            index={this.state.index}
           >
             <SidebarTabMenu
               onChange={(i: number) => this.setState({ index: i, isAddingFeedPost: false, isAddingChat: false })}
-              index={this.state.index}
             />
             <PlusButton onClick={() => this.chatPlusButtonPressed()}>
               <FontAwesomeIcon icon={this.state.isAddingChat ? faTimes : faPlus} />
@@ -148,15 +153,13 @@ export default class SidebarWrapper extends React.Component<null, SidebarWrapper
             body={
               <ChatThreadPage
                 isAddingChat={this.state.isAddingChat}
-                newChat={<CreateChatForm to={this.state.toName} />}
+                newChat={<CreateChatForm to={this.state.toName || ''} />}
                 chat={this.state.visibleChat}
               />
             }
-            index={this.state.index}
           >
             <SidebarTabMenu
               onChange={(i: number) => this.setState({ index: i, isAddingFeedPost: false, isAddingChat: false })}
-              index={this.state.index}
             />
             <UserList
               onChange={(u: User) => {
@@ -164,7 +167,6 @@ export default class SidebarWrapper extends React.Component<null, SidebarWrapper
                   transitioningToChat: true,
                   isAddingFeedPost: false,
                   isAddingChat: true,
-                  index: 1,
                   toName: u.username,
                 })
               }}
@@ -174,3 +176,5 @@ export default class SidebarWrapper extends React.Component<null, SidebarWrapper
     }
   }
 }
+
+export default withRouter(SidebarWrapper)

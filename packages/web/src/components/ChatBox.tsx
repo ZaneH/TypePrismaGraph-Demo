@@ -84,7 +84,7 @@ const ChatBox = (props: ChatBoxProps) => {
 
   return (
     <BoundingBox>
-      <TextArea placeholder='Type a message...' onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBody(e.target.value)} value={body} rows={4} />
+      <TextArea placeholder='Type a message...' onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBody(e.target.value)} value={body} rows={2} />
       <SendButton onClick={handleMessageSend}>Send</SendButton>
     </BoundingBox>
   )

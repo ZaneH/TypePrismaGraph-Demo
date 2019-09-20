@@ -57,6 +57,7 @@ query($id: ID!) {
         messages {
             id
             content
+            createdAt
             sender {
                 id
                 username

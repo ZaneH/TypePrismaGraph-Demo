@@ -5,9 +5,17 @@ const ChatBlock = styled.div`
   margin: 12px;
 `
 
+const Timestamp = styled.span`
+  float: right;
+
+  color: light-gray;
+  font-size: 11px;
+`
+
 interface ChatMessageFromGraphReq {
     id: string
     content: string
+    createdAt: Date
     sender: {
         id: string
         username: string
@@ -23,7 +31,7 @@ const ChatThread = (props: any) => {
   return props.messages.map((msg: ChatMessageFromGraphReq) => {
     return (
       <ChatBlock key={msg.id}>
-        <p>{msg.sender.username}: {msg.content}</p>
+        <p>{msg.sender.username}: {msg.content}<Timestamp className="msg-timestamp">{msg.createdAt}</Timestamp></p>
       </ChatBlock>
     )
   })

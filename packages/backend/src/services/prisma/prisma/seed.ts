@@ -32,8 +32,9 @@ async function main() {
           email: 'alice@mail.com',
         },
       },
-      content: 'gang content content content',
-      title: 'Gang Title!'
+      content:
+        'Mollit anim et mollit anim adipisicing dolore pariatur ullamco eu nostrud sint sunt est aliqua. Ad et ea ad enim aute aliqua enim adipisicing eu dolor exercitation reprehenderit exercitation. Elit aliqua enim ipsum eiusmod ex occaecat id excepteur ullamco aliqua. Occaecat sint aliqua culpa duis non eiusmod ipsum est ex nisi consequat nulla labore. Officia exercitation id elit exercitation nulla sint labore. Mollit id do est nulla elit irure.',
+      title: 'Title of my test post!',
     },
   })
 
@@ -45,8 +46,22 @@ async function main() {
           email: 'bob@mail.com',
         },
       },
-      content: 'this is bob\'s content. nothing better!',
-      title: 'Bob\'s Content'
+      content:
+        'Velit exercitation ex officia cillum veniam officia eiusmod Lorem qui magna non tempor voluptate ipsum. Qui non aliquip commodo reprehenderit incididunt consequat est proident enim aliquip mollit. Labore nostrud do cillum cillum nulla et qui pariatur cillum laboris qui excepteur.',
+      title: 'Hi',
+    },
+  })
+
+  const post3 = await photon.posts.create({
+    data: {
+      id: '3',
+      author: {
+        connect: {
+          email: 'bob@mail.com',
+        },
+      },
+      content: 'Laboris labore ad culpa anim cillum dolore. Enim labore ipsum quis quis adipisicing ipsum anim culpa. Ut sunt est nostrud nostrud est.',
+      title: 'Test 123'
     },
   })
 

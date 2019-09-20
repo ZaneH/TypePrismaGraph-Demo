@@ -19,8 +19,8 @@ const ChatMemberBlock = styled.div`
   position: relative;
   width: 100%;
   background-color: white;
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin-bottom: 12px;
+  margin-top: 12px;
 
   overflow-y: scroll;
 

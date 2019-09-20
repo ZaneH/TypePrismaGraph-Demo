@@ -25,11 +25,11 @@ const apolloClient = new ApolloClient({
 const routing = (
   <ApolloProvider client={apolloClient}>
     <Router>
-      <div>
-        <Route exact path="/app" component={App} />
-        <Route exact path="/" component={OnboardingPage} />
-        <Route exact path="/chat" render={(props) => <App sidebar={1} />} />
-      </div>
+      <Route exact path="/app" component={App} />
+      <Route exact path="/" component={OnboardingPage} />
+      <Route exact path="/app/feed" render={(props) => <App sidebar={0} />} />
+      <Route exact path="/app/chat" render={(props) => <App sidebar={1} />} />
+      <Route exact path="/app/people" render={(props) => <App sidebar={2} />} />
     </Router>
   </ApolloProvider>
 )

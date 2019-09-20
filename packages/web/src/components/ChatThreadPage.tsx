@@ -9,10 +9,17 @@ import idx from 'idx'
 import { useQuery } from '@apollo/react-hooks'
 import { CHAT_INFO_QUERY } from '@phoenix/common/constants'
 import ChatThread from './ChatThread'
+import { RouteComponentProps, withRouter } from 'react-router'
 
 const Container = styled.div`
   margin: 0;
   padding: 32px;
+
+  /* Compensate for Chatbox & DetailSidebar */
+  margin-bottom: 100px;
+  width: 67%;
+
+  overflow-wrap: break-word;
 `
 
 const ChatTitle = styled.h3`
@@ -20,7 +27,7 @@ const ChatTitle = styled.h3`
   text-transform: uppercase;
 `
 
-interface ChatThreadProps {
+interface ChatThreadProps extends RouteComponentProps {
   isAddingChat: boolean
   newChat: JSX.Element | null
   chat: Chat | null
@@ -33,7 +40,7 @@ const ChatThreadPage = (props: ChatThreadProps) => {
     },
   })
 
-  if (props.isAddingChat) {
+  if (props.isAddingChat) {    
     return props.newChat
   }
 
@@ -52,8 +59,12 @@ const ChatThreadPage = (props: ChatThreadProps) => {
       </Container>
     )
   } else {
-    return null
+    return (
+      <Container>
+        <h1>Chat</h1>
+      </Container>
+    )
   }
 }
 
-export default ChatThreadPage
+export default withRouter(ChatThreadPage)

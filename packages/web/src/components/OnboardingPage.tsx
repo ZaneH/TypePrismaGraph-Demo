@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { CREATE_USER_MUTATION, SIGNIN_USER_MUTATION } from '@phoenix/common/constants'
 import { useMutation } from '@apollo/react-hooks'
-import { Redirect } from 'react-router'
+import { withRouter, RouteComponentProps } from 'react-router'
 import idx from 'idx'
 
 const Onboarding = styled.div`
@@ -97,13 +97,12 @@ const HollowButton = styled.button`
   cursor: pointer;
 `
 
-export const OnboardingPage = (props: any) => {
+export const OnboardingPage = (props: RouteComponentProps) => {
   const [isCreatingAnAccount, setIsCreatingAnAccount] = useState(false)
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const [redirect, setRedirect] = useState(false)
   const [error, setError] = useState('')
 
   const [signUp] = useMutation(CREATE_USER_MUTATION, {
@@ -143,7 +142,7 @@ export const OnboardingPage = (props: any) => {
         localStorage.setItem('user/id', res.data.login.user.id)
       }
 
-      setRedirect(true)
+      props.history.push('/app/feed')
     } else {
       setError('Invalid information')
     }
@@ -158,17 +157,13 @@ export const OnboardingPage = (props: any) => {
         localStorage.setItem('user/id', res.data.login.user.id)
       }
       
-      setRedirect(true)
+      props.history.push('/app/feed')
     } else {
       setError('Invalid credentials')
     }
   }
 
   const renderSignIn = () => {
-    if (redirect) {
-      return <Redirect to="/app" />
-    }
-
     return (
       <Onboarding>
         <Container>
@@ -269,4 +264,4 @@ export const OnboardingPage = (props: any) => {
   return isCreatingAnAccount ? renderCreateAnAccount() : renderSignIn()
 }
 
-export default OnboardingPage
+export default withRouter(OnboardingPage)
