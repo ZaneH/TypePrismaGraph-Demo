@@ -1,20 +1,22 @@
 import React from 'react'
 import Sidebar from './Sidebar'
 import SidebarTabMenu from './SidebarTabMenu'
-import UserList from './UserList'
-import ChatList from './ChatList'
-import ChatThreadPage from './ChatThreadPage'
-import FeedDetail from './FeedDetail'
-import FeedList from './FeedList'
-import CreateChatForm from './CreateChatForm'
+import UserList from '../Users/UserList'
+import ChatList from '../Chat/ChatList'
+import ChatThreadPage from '../Chat/ChatThreadPage'
+import FeedDetail from '../Feed/FeedDetail'
+import FeedList from '../Feed/FeedList'
+import CreateChatForm from '../Chat/CreateChatForm'
 
 import { Post, User, Chat } from '@phoenix/prisma/node_modules/@generated/photon'
 import styled from 'styled-components'
-import CreateFeedPostForm from './CreateFeedPostForm'
+import CreateFeedPostForm from '../Feed/CreateFeedPostForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import idx from 'idx'
+import SettingsPage from '../Settings/SettingsPage'
 
 const PlusButton = styled.div`
   width: 60px;
@@ -28,7 +30,7 @@ const PlusButton = styled.div`
   font-size: 28px;
   margin: auto;
   margin-bottom: 16px;
-  line-height: 60px;
+  line-height: 62px;
 
   cursor: pointer;
 
@@ -57,10 +59,10 @@ class SidebarWrapper extends React.Component<RouteComponentProps, SidebarWrapper
       index: !!props.sidebar ? props.sidebar : 0,
       visibleFeedPost: null,
       visibleChat: null,
-      isAddingFeedPost: false,
-      isAddingChat: false,
+      isAddingFeedPost: !!idx(this.props, (_) => _.location.state.isAddingFeedPost),
+      isAddingChat: !!idx(this.props, (_) => _.location.state.prefillUsername),
       transitioningToChat: false,
-      toName: '',
+      toName: idx(this.props, (_) => _.location.state.prefillUsername) || '',
     }
   }
 
@@ -90,13 +92,6 @@ class SidebarWrapper extends React.Component<RouteComponentProps, SidebarWrapper
     }
   }
 
-  static getDerivedStateFromProps(props: any, state: any) {
-    if (!!state.toName) {
-    }
-
-    return null
-  }
-
   render() {
     switch (this.state.index) {
       case 0:
@@ -110,9 +105,7 @@ class SidebarWrapper extends React.Component<RouteComponentProps, SidebarWrapper
               />
             }
           >
-            <SidebarTabMenu
-              onChange={(i: number) => this.setState({ index: i, isAddingFeedPost: false, isAddingChat: false })}
-            />
+            <SidebarTabMenu onChange={() => {}} />
             <PlusButton onClick={() => this.feedPlusButtonPressed()}>
               <FontAwesomeIcon icon={this.state.isAddingFeedPost ? faTimes : faPlus} />
             </PlusButton>
@@ -129,14 +122,12 @@ class SidebarWrapper extends React.Component<RouteComponentProps, SidebarWrapper
             body={
               <ChatThreadPage
                 isAddingChat={this.state.isAddingChat}
-                newChat={<CreateChatForm to={this.state.toName || ''} />}
+                newChat={<CreateChatForm to={this.state.toName} />}
                 chat={this.state.visibleChat}
               />
             }
           >
-            <SidebarTabMenu
-              onChange={(i: number) => this.setState({ index: i, isAddingFeedPost: false, isAddingChat: false })}
-            />
+            <SidebarTabMenu onChange={() => {}} />
             <PlusButton onClick={() => this.chatPlusButtonPressed()}>
               <FontAwesomeIcon icon={this.state.isAddingChat ? faTimes : faPlus} />
             </PlusButton>
@@ -153,24 +144,26 @@ class SidebarWrapper extends React.Component<RouteComponentProps, SidebarWrapper
             body={
               <ChatThreadPage
                 isAddingChat={this.state.isAddingChat}
-                newChat={<CreateChatForm to={this.state.toName || ''} />}
+                // newChat will be passed CreateChatForm. If !!to then it will prefill the CreateChatForm username field
+                newChat={<CreateChatForm to={idx(this.props, (_) => _.location.state.prefillUsername) || ''} />}
                 chat={this.state.visibleChat}
               />
             }
           >
-            <SidebarTabMenu
-              onChange={(i: number) => this.setState({ index: i, isAddingFeedPost: false, isAddingChat: false })}
-            />
+            <SidebarTabMenu onChange={() => {}} />
             <UserList
               onChange={(u: User) => {
-                this.setState({
-                  transitioningToChat: true,
-                  isAddingFeedPost: false,
-                  isAddingChat: true,
-                  toName: u.username,
+                this.props.history.push('/app/chat', {
+                  prefillUsername: u.username,
                 })
               }}
             />
+          </Sidebar>
+        )
+      case 3:
+        return (
+          <Sidebar body={<SettingsPage />}>
+            <SidebarTabMenu onChange={() => {}} />
           </Sidebar>
         )
     }

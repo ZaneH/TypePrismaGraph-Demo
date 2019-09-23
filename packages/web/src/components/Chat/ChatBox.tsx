@@ -10,7 +10,7 @@ const BoundingBox = styled.div`
   left: 0;
 
   margin-left: 25%;
-  margin-right: 20%;
+  margin-right: 22%;
 
   z-index: 0;
 
@@ -48,6 +48,8 @@ const SendButton = styled.button`
 
   grid-column: 2;
   grid-row: 1;
+
+  cursor: pointer;
 `
 
 interface ChatBoxProps {

@@ -36,6 +36,10 @@ const FeedList = (props: any) => {
   }
 
   if (idx(data, (_) => data.posts)) {
+    if (data.posts.length === 0) {
+      return null
+    }
+
     return data.posts.map((p: Post) => (
       <FeedItem key={p.id} onClick={() => props.onChange(p)}>
         <h4>

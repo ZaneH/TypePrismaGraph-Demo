@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 interface SidebarProps {
@@ -32,17 +31,13 @@ const Body = styled.div`
   margin-left: 25%;
 `
 
-export default class Sidebar extends React.Component<SidebarProps> {
-  render() {
-    return (
-      <SidebarContainer>
-        <SidebarColumn>{this.props.children}</SidebarColumn>
-        <Body>{this.props.body}</Body>
-      </SidebarContainer>
-    )
-  }
-
-  static propTypes = {
-    body: PropTypes.object,
-  }
+const Sidebar = (props: any) => {
+  return (
+    <SidebarContainer>
+      <SidebarColumn>{props.children}</SidebarColumn>
+      <Body>{props.body}</Body>
+    </SidebarContainer>
+  )
 }
+
+export default Sidebar

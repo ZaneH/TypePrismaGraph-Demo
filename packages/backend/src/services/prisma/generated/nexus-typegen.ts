@@ -20,9 +20,14 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  BooleanFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: boolean | null; // Boolean
+  }
   ChatCreateInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     members?: NexusGenInputs['UserCreateManyWithoutMembersInput'] | null; // UserCreateManyWithoutMembersInput
     messages?: NexusGenInputs['ChatMessageCreateManyWithoutMessagesInput'] | null; // ChatMessageCreateManyWithoutMessagesInput
     name: string; // String!
@@ -45,6 +50,7 @@ export interface NexusGenInputs {
   ChatCreateWithoutMembersInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     messages?: NexusGenInputs['ChatMessageCreateManyWithoutMessagesInput'] | null; // ChatMessageCreateManyWithoutMessagesInput
     name: string; // String!
     owner: NexusGenInputs['UserCreateOneWithoutOwnerInput']; // UserCreateOneWithoutOwnerInput!
@@ -54,6 +60,7 @@ export interface NexusGenInputs {
   ChatCreateWithoutMessagesInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     members?: NexusGenInputs['UserCreateManyWithoutMembersInput'] | null; // UserCreateManyWithoutMembersInput
     name: string; // String!
     owner: NexusGenInputs['UserCreateOneWithoutOwnerInput']; // UserCreateOneWithoutOwnerInput!
@@ -63,6 +70,7 @@ export interface NexusGenInputs {
   ChatCreateWithoutOwnerInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     members?: NexusGenInputs['UserCreateManyWithoutMembersInput'] | null; // UserCreateManyWithoutMembersInput
     messages?: NexusGenInputs['ChatMessageCreateManyWithoutMessagesInput'] | null; // ChatMessageCreateManyWithoutMessagesInput
     name: string; // String!
@@ -169,6 +177,7 @@ export interface NexusGenInputs {
   ChatUpdateInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     members?: NexusGenInputs['UserUpdateManyWithoutChatsInput'] | null; // UserUpdateManyWithoutChatsInput
     messages?: NexusGenInputs['ChatMessageUpdateManyWithoutChatInput'] | null; // ChatMessageUpdateManyWithoutChatInput
     name?: string | null; // String
@@ -179,6 +188,7 @@ export interface NexusGenInputs {
   ChatUpdateManyDataInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     name?: string | null; // String
     picture?: string | null; // String
     updatedAt?: any | null; // DateTime
@@ -226,6 +236,7 @@ export interface NexusGenInputs {
   ChatUpdateWithoutMembersDataInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     messages?: NexusGenInputs['ChatMessageUpdateManyWithoutChatInput'] | null; // ChatMessageUpdateManyWithoutChatInput
     name?: string | null; // String
     owner?: NexusGenInputs['UserUpdateOneRequiredWithoutChatsOwnedInput'] | null; // UserUpdateOneRequiredWithoutChatsOwnedInput
@@ -235,6 +246,7 @@ export interface NexusGenInputs {
   ChatUpdateWithoutMessagesDataInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     members?: NexusGenInputs['UserUpdateManyWithoutChatsInput'] | null; // UserUpdateManyWithoutChatsInput
     name?: string | null; // String
     owner?: NexusGenInputs['UserUpdateOneRequiredWithoutChatsOwnedInput'] | null; // UserUpdateOneRequiredWithoutChatsOwnedInput
@@ -244,6 +256,7 @@ export interface NexusGenInputs {
   ChatUpdateWithoutOwnerDataInput: { // input type
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
+    isArchived?: boolean | null; // Boolean
     members?: NexusGenInputs['UserUpdateManyWithoutChatsInput'] | null; // UserUpdateManyWithoutChatsInput
     messages?: NexusGenInputs['ChatMessageUpdateManyWithoutChatInput'] | null; // ChatMessageUpdateManyWithoutChatInput
     name?: string | null; // String
@@ -302,6 +315,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['MutationUpdateOneUserWhereInput'][] | null; // [MutationUpdateOneUserWhereInput!]
     createdAt?: NexusGenInputs['MutationUpdateOneUserFilter'] | null; // MutationUpdateOneUserFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    isArchived?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     members?: NexusGenInputs['MutationUpdateOneUserFilter'] | null; // MutationUpdateOneUserFilter
     messages?: NexusGenInputs['MutationUpdateOneUserFilter'] | null; // MutationUpdateOneUserFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -311,7 +325,7 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenInputs['MutationUpdateOneUserFilter'] | null; // MutationUpdateOneUserFilter
   }
   PostCreateInput: { // input type
-    author: NexusGenInputs['UserCreateOneWithoutAuthorInput']; // UserCreateOneWithoutAuthorInput!
+    author?: NexusGenInputs['UserCreateOneWithoutAuthorInput'] | null; // UserCreateOneWithoutAuthorInput
     content: string; // String!
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
@@ -332,7 +346,7 @@ export interface NexusGenInputs {
     updatedAt?: any | null; // DateTime
   }
   PostUpdateInput: { // input type
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutPostsInput'] | null; // UserUpdateOneRequiredWithoutPostsInput
+    author?: NexusGenInputs['UserUpdateOneWithoutPostsInput'] | null; // UserUpdateOneWithoutPostsInput
     content?: string | null; // String
     createdAt?: any | null; // DateTime
     id?: string | null; // ID
@@ -523,12 +537,6 @@ export interface NexusGenInputs {
     update?: NexusGenInputs['UserUpdateWithoutChatsOwnedDataInput'] | null; // UserUpdateWithoutChatsOwnedDataInput
     upsert?: NexusGenInputs['UserUpsertWithoutChatsOwnedInput'] | null; // UserUpsertWithoutChatsOwnedInput
   }
-  UserUpdateOneRequiredWithoutPostsInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    create?: NexusGenInputs['UserCreateWithoutPostsInput'] | null; // UserCreateWithoutPostsInput
-    update?: NexusGenInputs['UserUpdateWithoutPostsDataInput'] | null; // UserUpdateWithoutPostsDataInput
-    upsert?: NexusGenInputs['UserUpsertWithoutPostsInput'] | null; // UserUpsertWithoutPostsInput
-  }
   UserUpdateOneWithoutChatMessageInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
     create?: NexusGenInputs['UserCreateWithoutChatMessageInput'] | null; // UserCreateWithoutChatMessageInput
@@ -536,6 +544,14 @@ export interface NexusGenInputs {
     disconnect?: boolean | null; // Boolean
     update?: NexusGenInputs['UserUpdateWithoutChatMessageDataInput'] | null; // UserUpdateWithoutChatMessageDataInput
     upsert?: NexusGenInputs['UserUpsertWithoutChatMessageInput'] | null; // UserUpsertWithoutChatMessageInput
+  }
+  UserUpdateOneWithoutPostsInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+    create?: NexusGenInputs['UserCreateWithoutPostsInput'] | null; // UserCreateWithoutPostsInput
+    delete?: boolean | null; // Boolean
+    disconnect?: boolean | null; // Boolean
+    update?: NexusGenInputs['UserUpdateWithoutPostsDataInput'] | null; // UserUpdateWithoutPostsDataInput
+    upsert?: NexusGenInputs['UserUpsertWithoutPostsInput'] | null; // UserUpsertWithoutPostsInput
   }
   UserUpdateWithWhereUniqueWithoutChatsInput: { // input type
     data: NexusGenInputs['UserUpdateWithoutChatsDataInput']; // UserUpdateWithoutChatsDataInput!
@@ -641,6 +657,7 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  BooleanFilter: NexusGenInputs['BooleanFilter'];
   ChatCreateInput: NexusGenInputs['ChatCreateInput'];
   ChatCreateManyWithoutChatsInput: NexusGenInputs['ChatCreateManyWithoutChatsInput'];
   ChatCreateManyWithoutChatsOwnedInput: NexusGenInputs['ChatCreateManyWithoutChatsOwnedInput'];
@@ -709,8 +726,8 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   UserUpdateManyWithWhereNestedInput: NexusGenInputs['UserUpdateManyWithWhereNestedInput'];
   UserUpdateManyWithoutChatsInput: NexusGenInputs['UserUpdateManyWithoutChatsInput'];
   UserUpdateOneRequiredWithoutChatsOwnedInput: NexusGenInputs['UserUpdateOneRequiredWithoutChatsOwnedInput'];
-  UserUpdateOneRequiredWithoutPostsInput: NexusGenInputs['UserUpdateOneRequiredWithoutPostsInput'];
   UserUpdateOneWithoutChatMessageInput: NexusGenInputs['UserUpdateOneWithoutChatMessageInput'];
+  UserUpdateOneWithoutPostsInput: NexusGenInputs['UserUpdateOneWithoutPostsInput'];
   UserUpdateWithWhereUniqueWithoutChatsInput: NexusGenInputs['UserUpdateWithWhereUniqueWithoutChatsInput'];
   UserUpdateWithoutChatMessageDataInput: NexusGenInputs['UserUpdateWithoutChatMessageDataInput'];
   UserUpdateWithoutChatsDataInput: NexusGenInputs['UserUpdateWithoutChatsDataInput'];
@@ -732,6 +749,7 @@ export interface NexusGenFieldTypes {
   Chat: { // field return type
     createdAt: any; // DateTime!
     id: string; // ID!
+    isArchived: boolean; // Boolean!
     members: NexusGenRootTypes['User'][] | null; // [User!]
     messages: NexusGenRootTypes['ChatMessage'][] | null; // [ChatMessage!]
     name: string; // String!
@@ -763,7 +781,7 @@ export interface NexusGenFieldTypes {
     updateOneUser: NexusGenRootTypes['User'] | null; // User
   }
   Post: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['User'] | null; // User
     content: string; // String!
     createdAt: any; // DateTime!
     id: string; // ID!
@@ -775,15 +793,14 @@ export interface NexusGenFieldTypes {
     chat: NexusGenRootTypes['Chat'] | null; // Chat
     chatmessage: NexusGenRootTypes['ChatMessage'] | null; // ChatMessage
     chatmessages: NexusGenRootTypes['ChatMessage'][] | null; // [ChatMessage!]
-    chats: NexusGenRootTypes['Chat'][] | null; // [Chat!]
     me: NexusGenRootTypes['User'] | null; // User
     post: NexusGenRootTypes['Post'] | null; // Post
-    posts: NexusGenRootTypes['Post'][] | null; // [Post!]
+    posts: NexusGenRootTypes['Post'][]; // [Post!]!
     user: NexusGenRootTypes['User'] | null; // User
     users: NexusGenRootTypes['User'][] | null; // [User!]
   }
   User: { // field return type
-    chats: NexusGenRootTypes['Chat'][] | null; // [Chat!]
+    chats: NexusGenRootTypes['Chat'][]; // [Chat!]!
     chatsOwned: NexusGenRootTypes['Chat'][] | null; // [Chat!]
     createdAt: any; // DateTime!
     email: string; // String!
@@ -879,22 +896,8 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
       skip?: number | null; // Int
     }
-    chats: { // args
-      after?: string | null; // String
-      before?: string | null; // String
-      first?: number | null; // Int
-      last?: number | null; // Int
-      skip?: number | null; // Int
-    }
     post: { // args
       where: NexusGenInputs['PostWhereUniqueInput']; // PostWhereUniqueInput!
-    }
-    posts: { // args
-      after?: string | null; // String
-      before?: string | null; // String
-      first?: number | null; // Int
-      last?: number | null; // Int
-      skip?: number | null; // Int
     }
     user: { // args
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
@@ -908,13 +911,6 @@ export interface NexusGenArgTypes {
     }
   }
   User: {
-    chats: { // args
-      after?: string | null; // String
-      before?: string | null; // String
-      first?: number | null; // Int
-      last?: number | null; // Int
-      skip?: number | null; // Int
-    }
     chatsOwned: { // args
       after?: string | null; // String
       before?: string | null; // String
@@ -939,7 +935,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthPayload" | "Chat" | "ChatMessage" | "Mutation" | "Post" | "Query" | "User";
 
-export type NexusGenInputNames = "ChatCreateInput" | "ChatCreateManyWithoutChatsInput" | "ChatCreateManyWithoutChatsOwnedInput" | "ChatCreateOneWithoutChatInput" | "ChatCreateWithoutMembersInput" | "ChatCreateWithoutMessagesInput" | "ChatCreateWithoutOwnerInput" | "ChatMessageCreateInput" | "ChatMessageCreateManyWithoutMessagesInput" | "ChatMessageCreateOneWithoutChatMessageInput" | "ChatMessageCreateWithoutChatInput" | "ChatMessageCreateWithoutSenderInput" | "ChatMessageUpdateInput" | "ChatMessageUpdateManyDataInput" | "ChatMessageUpdateManyWithWhereNestedInput" | "ChatMessageUpdateManyWithoutChatInput" | "ChatMessageUpdateOneWithoutSenderInput" | "ChatMessageUpdateWithWhereUniqueWithoutChatInput" | "ChatMessageUpdateWithoutChatDataInput" | "ChatMessageUpdateWithoutSenderDataInput" | "ChatMessageUpsertWithWhereUniqueWithoutChatInput" | "ChatMessageUpsertWithoutSenderInput" | "ChatMessageWhereUniqueInput" | "ChatUpdateInput" | "ChatUpdateManyDataInput" | "ChatUpdateManyWithWhereNestedInput" | "ChatUpdateManyWithoutMembersInput" | "ChatUpdateManyWithoutOwnerInput" | "ChatUpdateOneRequiredWithoutMessagesInput" | "ChatUpdateWithWhereUniqueWithoutMembersInput" | "ChatUpdateWithWhereUniqueWithoutOwnerInput" | "ChatUpdateWithoutMembersDataInput" | "ChatUpdateWithoutMessagesDataInput" | "ChatUpdateWithoutOwnerDataInput" | "ChatUpsertWithWhereUniqueWithoutMembersInput" | "ChatUpsertWithWhereUniqueWithoutOwnerInput" | "ChatUpsertWithoutMessagesInput" | "ChatWhereUniqueInput" | "MutationUpdateOneChatFilter" | "MutationUpdateOneChatWhereInput" | "MutationUpdateOneUserFilter" | "MutationUpdateOneUserWhereInput" | "PostCreateInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostUpdateInput" | "PostUpdateManyDataInput" | "PostUpdateManyWithWhereNestedInput" | "PostUpdateManyWithoutAuthorInput" | "PostUpdateWithWhereUniqueWithoutAuthorInput" | "PostUpdateWithoutAuthorDataInput" | "PostUpsertWithWhereUniqueWithoutAuthorInput" | "PostWhereUniqueInput" | "StringFilter" | "UserCreateInput" | "UserCreateManyWithoutMembersInput" | "UserCreateOneWithoutAuthorInput" | "UserCreateOneWithoutOwnerInput" | "UserCreateOneWithoutSenderInput" | "UserCreateWithoutChatMessageInput" | "UserCreateWithoutChatsInput" | "UserCreateWithoutChatsOwnedInput" | "UserCreateWithoutPostsInput" | "UserUpdateInput" | "UserUpdateManyDataInput" | "UserUpdateManyWithWhereNestedInput" | "UserUpdateManyWithoutChatsInput" | "UserUpdateOneRequiredWithoutChatsOwnedInput" | "UserUpdateOneRequiredWithoutPostsInput" | "UserUpdateOneWithoutChatMessageInput" | "UserUpdateWithWhereUniqueWithoutChatsInput" | "UserUpdateWithoutChatMessageDataInput" | "UserUpdateWithoutChatsDataInput" | "UserUpdateWithoutChatsOwnedDataInput" | "UserUpdateWithoutPostsDataInput" | "UserUpsertWithWhereUniqueWithoutChatsInput" | "UserUpsertWithoutChatMessageInput" | "UserUpsertWithoutChatsOwnedInput" | "UserUpsertWithoutPostsInput" | "UserWhereUniqueInput";
+export type NexusGenInputNames = "BooleanFilter" | "ChatCreateInput" | "ChatCreateManyWithoutChatsInput" | "ChatCreateManyWithoutChatsOwnedInput" | "ChatCreateOneWithoutChatInput" | "ChatCreateWithoutMembersInput" | "ChatCreateWithoutMessagesInput" | "ChatCreateWithoutOwnerInput" | "ChatMessageCreateInput" | "ChatMessageCreateManyWithoutMessagesInput" | "ChatMessageCreateOneWithoutChatMessageInput" | "ChatMessageCreateWithoutChatInput" | "ChatMessageCreateWithoutSenderInput" | "ChatMessageUpdateInput" | "ChatMessageUpdateManyDataInput" | "ChatMessageUpdateManyWithWhereNestedInput" | "ChatMessageUpdateManyWithoutChatInput" | "ChatMessageUpdateOneWithoutSenderInput" | "ChatMessageUpdateWithWhereUniqueWithoutChatInput" | "ChatMessageUpdateWithoutChatDataInput" | "ChatMessageUpdateWithoutSenderDataInput" | "ChatMessageUpsertWithWhereUniqueWithoutChatInput" | "ChatMessageUpsertWithoutSenderInput" | "ChatMessageWhereUniqueInput" | "ChatUpdateInput" | "ChatUpdateManyDataInput" | "ChatUpdateManyWithWhereNestedInput" | "ChatUpdateManyWithoutMembersInput" | "ChatUpdateManyWithoutOwnerInput" | "ChatUpdateOneRequiredWithoutMessagesInput" | "ChatUpdateWithWhereUniqueWithoutMembersInput" | "ChatUpdateWithWhereUniqueWithoutOwnerInput" | "ChatUpdateWithoutMembersDataInput" | "ChatUpdateWithoutMessagesDataInput" | "ChatUpdateWithoutOwnerDataInput" | "ChatUpsertWithWhereUniqueWithoutMembersInput" | "ChatUpsertWithWhereUniqueWithoutOwnerInput" | "ChatUpsertWithoutMessagesInput" | "ChatWhereUniqueInput" | "MutationUpdateOneChatFilter" | "MutationUpdateOneChatWhereInput" | "MutationUpdateOneUserFilter" | "MutationUpdateOneUserWhereInput" | "PostCreateInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostUpdateInput" | "PostUpdateManyDataInput" | "PostUpdateManyWithWhereNestedInput" | "PostUpdateManyWithoutAuthorInput" | "PostUpdateWithWhereUniqueWithoutAuthorInput" | "PostUpdateWithoutAuthorDataInput" | "PostUpsertWithWhereUniqueWithoutAuthorInput" | "PostWhereUniqueInput" | "StringFilter" | "UserCreateInput" | "UserCreateManyWithoutMembersInput" | "UserCreateOneWithoutAuthorInput" | "UserCreateOneWithoutOwnerInput" | "UserCreateOneWithoutSenderInput" | "UserCreateWithoutChatMessageInput" | "UserCreateWithoutChatsInput" | "UserCreateWithoutChatsOwnedInput" | "UserCreateWithoutPostsInput" | "UserUpdateInput" | "UserUpdateManyDataInput" | "UserUpdateManyWithWhereNestedInput" | "UserUpdateManyWithoutChatsInput" | "UserUpdateOneRequiredWithoutChatsOwnedInput" | "UserUpdateOneWithoutChatMessageInput" | "UserUpdateOneWithoutPostsInput" | "UserUpdateWithWhereUniqueWithoutChatsInput" | "UserUpdateWithoutChatMessageDataInput" | "UserUpdateWithoutChatsDataInput" | "UserUpdateWithoutChatsOwnedDataInput" | "UserUpdateWithoutPostsDataInput" | "UserUpsertWithWhereUniqueWithoutChatsInput" | "UserUpsertWithoutChatMessageInput" | "UserUpsertWithoutChatsOwnedInput" | "UserUpsertWithoutPostsInput" | "UserWhereUniqueInput";
 
 export type NexusGenEnumNames = "MessageType";
 

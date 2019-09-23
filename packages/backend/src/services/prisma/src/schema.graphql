@@ -7,9 +7,15 @@ type AuthPayload {
   user: User!
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
 type Chat {
   createdAt: DateTime!
   id: ID!
+  isArchived: Boolean!
   members(after: String, before: String, first: Int, last: Int, skip: Int): [User!]
   messages(after: String, before: String, first: Int, last: Int, skip: Int): [ChatMessage!]
   name: String!
@@ -21,6 +27,7 @@ type Chat {
 input ChatCreateInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   members: UserCreateManyWithoutMembersInput
   messages: ChatMessageCreateManyWithoutMessagesInput
   name: String!
@@ -47,6 +54,7 @@ input ChatCreateOneWithoutChatInput {
 input ChatCreateWithoutMembersInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   messages: ChatMessageCreateManyWithoutMessagesInput
   name: String!
   owner: UserCreateOneWithoutOwnerInput!
@@ -57,6 +65,7 @@ input ChatCreateWithoutMembersInput {
 input ChatCreateWithoutMessagesInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   members: UserCreateManyWithoutMembersInput
   name: String!
   owner: UserCreateOneWithoutOwnerInput!
@@ -67,6 +76,7 @@ input ChatCreateWithoutMessagesInput {
 input ChatCreateWithoutOwnerInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   members: UserCreateManyWithoutMembersInput
   messages: ChatMessageCreateManyWithoutMessagesInput
   name: String!
@@ -198,6 +208,7 @@ input ChatMessageWhereUniqueInput {
 input ChatUpdateInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   members: UserUpdateManyWithoutChatsInput
   messages: ChatMessageUpdateManyWithoutChatInput
   name: String
@@ -209,6 +220,7 @@ input ChatUpdateInput {
 input ChatUpdateManyDataInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   name: String
   picture: String
   updatedAt: DateTime
@@ -253,6 +265,7 @@ input ChatUpdateOneRequiredWithoutMessagesInput {
 input ChatUpdateWithoutMembersDataInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   messages: ChatMessageUpdateManyWithoutChatInput
   name: String
   owner: UserUpdateOneRequiredWithoutChatsOwnedInput
@@ -263,6 +276,7 @@ input ChatUpdateWithoutMembersDataInput {
 input ChatUpdateWithoutMessagesDataInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   members: UserUpdateManyWithoutChatsInput
   name: String
   owner: UserUpdateOneRequiredWithoutChatsOwnedInput
@@ -273,6 +287,7 @@ input ChatUpdateWithoutMessagesDataInput {
 input ChatUpdateWithoutOwnerDataInput {
   createdAt: DateTime
   id: ID
+  isArchived: Boolean
   members: UserUpdateManyWithoutChatsInput
   messages: ChatMessageUpdateManyWithoutChatInput
   name: String
@@ -375,6 +390,7 @@ input MutationUpdateOneUserWhereInput {
   AND: [MutationUpdateOneUserWhereInput!]
   createdAt: MutationUpdateOneUserFilter
   id: StringFilter
+  isArchived: BooleanFilter
   members: MutationUpdateOneUserFilter
   messages: MutationUpdateOneUserFilter
   name: StringFilter
@@ -385,7 +401,7 @@ input MutationUpdateOneUserWhereInput {
 }
 
 type Post {
-  author: User!
+  author: User
   content: String!
   createdAt: DateTime!
   id: ID!
@@ -395,7 +411,7 @@ type Post {
 }
 
 input PostCreateInput {
-  author: UserCreateOneWithoutAuthorInput!
+  author: UserCreateOneWithoutAuthorInput
   content: String!
   createdAt: DateTime
   id: ID
@@ -419,7 +435,7 @@ input PostCreateWithoutAuthorInput {
 }
 
 input PostUpdateInput {
-  author: UserUpdateOneRequiredWithoutPostsInput
+  author: UserUpdateOneWithoutPostsInput
   content: String
   createdAt: DateTime
   id: ID
@@ -482,10 +498,9 @@ type Query {
   chat(where: ChatWhereUniqueInput!): Chat
   chatmessage(where: ChatMessageWhereUniqueInput!): ChatMessage
   chatmessages(after: String, before: String, first: Int, last: Int, skip: Int): [ChatMessage!]
-  chats(after: String, before: String, first: Int, last: Int, skip: Int): [Chat!]
   me: User
   post(where: PostWhereUniqueInput!): Post
-  posts(after: String, before: String, first: Int, last: Int, skip: Int): [Post!]
+  posts: [Post!]!
   user(where: UserWhereUniqueInput!): User
   users(after: String, before: String, first: Int, last: Int, skip: Int): [User!]
 }
@@ -505,7 +520,7 @@ input StringFilter {
 }
 
 type User {
-  chats(after: String, before: String, first: Int, last: Int, skip: Int): [Chat!]
+  chats: [Chat!]!
   chatsOwned(after: String, before: String, first: Int, last: Int, skip: Int): [Chat!]
   createdAt: DateTime!
   email: String!
@@ -658,13 +673,6 @@ input UserUpdateOneRequiredWithoutChatsOwnedInput {
   upsert: UserUpsertWithoutChatsOwnedInput
 }
 
-input UserUpdateOneRequiredWithoutPostsInput {
-  connect: UserWhereUniqueInput
-  create: UserCreateWithoutPostsInput
-  update: UserUpdateWithoutPostsDataInput
-  upsert: UserUpsertWithoutPostsInput
-}
-
 input UserUpdateOneWithoutChatMessageInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutChatMessageInput
@@ -672,6 +680,15 @@ input UserUpdateOneWithoutChatMessageInput {
   disconnect: Boolean
   update: UserUpdateWithoutChatMessageDataInput
   upsert: UserUpsertWithoutChatMessageInput
+}
+
+input UserUpdateOneWithoutPostsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutPostsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutPostsDataInput
+  upsert: UserUpsertWithoutPostsInput
 }
 
 input UserUpdateWithoutChatMessageDataInput {

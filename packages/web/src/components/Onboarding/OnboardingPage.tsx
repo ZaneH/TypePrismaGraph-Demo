@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 
-import { CREATE_USER_MUTATION, SIGNIN_USER_MUTATION } from '@phoenix/common/constants'
+import { SIGNUP_USER_MUTATION, SIGNIN_USER_MUTATION } from '@phoenix/common/constants'
 import { useMutation } from '@apollo/react-hooks'
 import { withRouter, RouteComponentProps } from 'react-router'
 import idx from 'idx'
@@ -47,7 +47,7 @@ const Container = styled.div`
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 12px;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
 `
 
 const OnboardingFormField = styled.div`
@@ -105,7 +105,7 @@ export const OnboardingPage = (props: RouteComponentProps) => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const [signUp] = useMutation(CREATE_USER_MUTATION, {
+  const [signUp] = useMutation(SIGNUP_USER_MUTATION, {
     variables: {
       email,
       name,
@@ -130,16 +130,17 @@ export const OnboardingPage = (props: RouteComponentProps) => {
   }
 
   const handleSignUpPressed = async () => {
-    if (!!name || !!password || !!email || !!username) {
+    if (!!!name || !!!password || !!!email || !!!username) {
+      setError('Missing required information')
       return
     }
 
     const res = await signUp()
 
-    if (idx(res, (_) => _.data.login.token)) {
-      localStorage.setItem('user/token', res.data.login.token)
+    if (idx(res, (_) => _.data.signup.token)) {
+      localStorage.setItem('user/token', res.data.signup.token)
       if (idx(res, (_) => _.data.login.user)) {
-        localStorage.setItem('user/id', res.data.login.user.id)
+        localStorage.setItem('user/id', res.data.signup.user.id)
       }
 
       props.history.push('/app/feed')
@@ -156,7 +157,7 @@ export const OnboardingPage = (props: RouteComponentProps) => {
       if (idx(res, (_) => _.data.login.user)) {
         localStorage.setItem('user/id', res.data.login.user.id)
       }
-      
+
       props.history.push('/app/feed')
     } else {
       setError('Invalid credentials')
@@ -181,7 +182,7 @@ export const OnboardingPage = (props: RouteComponentProps) => {
             />
           </OnboardingFormField>
           <OnboardingFormField style={{ gridRow: 2 }}>
-            <label htmlFor="email">Password:</label>
+            <label htmlFor="password">Password:</label>
             <Input
               onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               type="password"
@@ -224,7 +225,7 @@ export const OnboardingPage = (props: RouteComponentProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setEmail(e.target.value)
               }}
-              type="text"
+              type="email"
               name="email"
               id="email"
             />

@@ -1,71 +1,95 @@
 import Photon from '@generated/photon'
+import { lorem, internet, name, image } from 'faker'
 const photon = new Photon()
 
 async function main() {
-  const user1 = await photon.users.create({
+  for (let i = 100; i < 110; i++) {
+    await photon.users.create({
+      data: {
+        id: String(i),
+        email: internet.email(),
+        name: name.firstName(),
+        password: '$2a$10$BRzhZPeoYx1rbd6FchIw/.Qoky7BZ/hCARpL07U8qAnKai91OIFLW' /* gang */,
+        picture: image.avatar(),
+        username: internet.userName(),
+      },
+    })
+  }
+
+  const alice = await photon.users.create({
     data: {
-      id: '1',
-      email: 'bob@mail.com',
-      name: 'bob',
-      password: '$2b$10$ZjONRZAxqX2pLoPax2xdcuzABTUEsFanQI6yBYCRtzpRiU4/X1uIu',
-      picture: 'http://placekitten.com/300/300',
-      username: 'bobs_belly',
+      id: '1337',
+      email: internet.email(),
+      name: 'Alice Bott',
+      password: '$2a$10$BRzhZPeoYx1rbd6FchIw/.Qoky7BZ/hCARpL07U8qAnKai91OIFLW' /* gang */,
+      picture: image.avatar(),
+      username: 'alice_',
     },
   })
 
-  const user2 = await photon.users.create({
+  const bob = await photon.users.create({
     data: {
-      id: '2',
-      email: 'alice@mail.com',
-      name: 'alice',
-      password: '$2b$10$o6KioO.taArzboM44Ig85O3ZFZYZpR3XD7mI8T29eP4znU/.xyJbW',
-      picture: 'http://placekitten.com/300/300',
-      username: 'alice5',
-    },
+      id: '1338',
+      email: internet.email(),
+      name: 'Bob Bott',
+      password: '$2a$10$BRzhZPeoYx1rbd6FchIw/.Qoky7BZ/hCARpL07U8qAnKai91OIFLW' /* gang */,
+      picture: image.avatar(),
+      username: 'bob_'
+    }
+  })
+
+  const dan = await photon.users.create({
+    data: {
+      id: '1339',
+      email: internet.email(),
+      name: 'Dan Bott',
+      password: '$2a$10$BRzhZPeoYx1rbd6FchIw/.Qoky7BZ/hCARpL07U8qAnKai91OIFLW' /* gang */,
+      picture: image.avatar(),
+      username: 'dan_'
+    }
   })
 
   const post1 = await photon.posts.create({
     data: {
-      id: '1',
+      id: '1337',
       author: {
         connect: {
-          email: 'alice@mail.com',
+          id: '1337',
         },
       },
-      content:
-        'Mollit anim et mollit anim adipisicing dolore pariatur ullamco eu nostrud sint sunt est aliqua. Ad et ea ad enim aute aliqua enim adipisicing eu dolor exercitation reprehenderit exercitation. Elit aliqua enim ipsum eiusmod ex occaecat id excepteur ullamco aliqua. Occaecat sint aliqua culpa duis non eiusmod ipsum est ex nisi consequat nulla labore. Officia exercitation id elit exercitation nulla sint labore. Mollit id do est nulla elit irure.',
-      title: 'Title of my test post!',
+      content: lorem.paragraph(),
+      title: lorem.sentence(),
+      published: true,
     },
   })
 
   const post2 = await photon.posts.create({
     data: {
-      id: '2',
+      id: '1338',
       author: {
         connect: {
-          email: 'bob@mail.com',
+          id: '1337',
         },
       },
-      content:
-        'Velit exercitation ex officia cillum veniam officia eiusmod Lorem qui magna non tempor voluptate ipsum. Qui non aliquip commodo reprehenderit incididunt consequat est proident enim aliquip mollit. Labore nostrud do cillum cillum nulla et qui pariatur cillum laboris qui excepteur.',
-      title: 'Hi',
+      content: lorem.paragraphs(2),
+      title: lorem.sentence(),
+      published: true,
     },
   })
 
   const post3 = await photon.posts.create({
     data: {
-      id: '3',
+      id: '1339',
       author: {
         connect: {
-          email: 'bob@mail.com',
+          id: '1338',
         },
       },
-      content: 'Laboris labore ad culpa anim cillum dolore. Enim labore ipsum quis quis adipisicing ipsum anim culpa. Ut sunt est nostrud nostrud est.',
-      title: 'Test 123'
+      content: lorem.paragraphs(4),
+      title: lorem.sentence(),
+      published: true,
     },
   })
-
-  console.log({ user1, user2 })
 }
 
 main().finally(async () => {

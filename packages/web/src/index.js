@@ -4,20 +4,31 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-import OnboardingPage from './components/OnboardingPage'
+import OnboardingPage from './components/Onboarding/OnboardingPage'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import { ApolloProvider } from '@apollo/react-hooks'
 import ApolloClient from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { setContext } from 'apollo-link-context'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({ uri: 'http://localhost:4000' })
 
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('user/token')
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  }
+})
+
 // used for graphql calls
 const apolloClient = new ApolloClient({
-  link,
+  link: authLink.concat(link),
   cache,
 })
 
@@ -30,6 +41,7 @@ const routing = (
       <Route exact path="/app/feed" render={(props) => <App sidebar={0} />} />
       <Route exact path="/app/chat" render={(props) => <App sidebar={1} />} />
       <Route exact path="/app/people" render={(props) => <App sidebar={2} />} />
+      <Route exact path="/app/settings" render={(props) => <App sidebar={3} />} />
     </Router>
   </ApolloProvider>
 )

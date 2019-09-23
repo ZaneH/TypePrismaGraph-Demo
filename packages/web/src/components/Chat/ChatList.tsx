@@ -7,18 +7,15 @@ import ChatListItem from './ChatListItem'
 import { Chat } from '@phoenix/prisma/node_modules/@generated/photon'
 
 const ChatList = (props: any) => {
-  const { data, loading } = useQuery(CHAT_LIST_QUERY, {
-    variables: {
-      id: localStorage.getItem('user/id'),
-    },
-  })
+  const { data, loading } = useQuery(CHAT_LIST_QUERY)
 
   if (loading) {
     return null
   }
 
-  if (idx(data, (_) => _.user.chats)) {
-    return data.user.chats.map((c: Chat) => <ChatListItem onClick={() => props.onChange(c)} key={c.id} chat={c} />)
+
+  if (idx(data, (_) => _.me.chats)) {
+    return data.me.chats.map((c: Chat) => <ChatListItem onClick={() => props.onChange(c)} key={c.id} chat={c} />)
   } else {
     return null
   }

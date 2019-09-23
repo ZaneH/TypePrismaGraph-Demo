@@ -1,0 +1,24 @@
+{
+  "version": "0.2.50",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "Chat",
+      "name": "isArchived",
+      "type": {
+        "Base": "Boolean"
+      },
+      "arity": "required",
+      "isUnique": false,
+      "default": {
+        "Boolean": false
+      }
+    },
+    {
+      "stepType": "UpdateField",
+      "model": "ChatMessage",
+      "name": "sender",
+      "arity": "optional"
+    }
+  ]
+}

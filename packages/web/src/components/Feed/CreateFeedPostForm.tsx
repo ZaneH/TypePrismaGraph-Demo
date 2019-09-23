@@ -1,7 +1,7 @@
 import React, { FormEvent, useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 
-import { CREATE_POST_MUTATION, FEED_LIST_QUERY } from '@phoenix/common/constants'
+import { CREATE_POST_MUTATION, FEED_LIST_QUERY, UPDATE_POST_MUTATION } from '@phoenix/common/constants'
 import { useMutation } from '@apollo/react-hooks'
 
 const Container = styled.form`
@@ -35,6 +35,8 @@ const Submit = styled.button`
   margin-top: 10px;
 
   cursor: pointer;
+
+  font-size: 13px;
 `
 
 const Input = styled.input`
@@ -54,15 +56,26 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
 `
 
-const CreateFeedPostForm = () => {
+interface CreateFeedPostFormProps {
+  id?: string
+  title?: string
+  content?: string
+}
+
+let prefilledTitle = ''
+let prefilledContent = ''
+
+const CreateFeedPostForm = (props: CreateFeedPostFormProps) => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+  const [isEditingPost, setEditingPost] = useState(false)
 
   const [createPost] = useMutation(CREATE_POST_MUTATION, {
     variables: {
       data: {
         title,
         content: body,
+        published: true,
         author: {
           connect: {
             id: localStorage.getItem('user/id'),
@@ -71,6 +84,18 @@ const CreateFeedPostForm = () => {
       },
     },
     refetchQueries: [{ query: FEED_LIST_QUERY }],
+  })
+
+  const [updatePost] = useMutation(UPDATE_POST_MUTATION, {
+    variables: {
+      where: {
+        id: props.id,
+      },
+      data: {
+        title: title,
+        content: body,
+      },
+    },
   })
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,10 +109,27 @@ const CreateFeedPostForm = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    await createPost()
+    if (isEditingPost) {
+      await updatePost()
+    } else {
+      await createPost()
+    }
 
     setTitle('')
     setBody('')
+  }
+
+  // check if there's incoming date from pressing "Edit"
+  if (!!props.title && prefilledTitle !== props.title) {
+    setTitle(props.title)
+    prefilledTitle = props.title
+    setEditingPost(true)
+  }
+
+  if (!!props.content && prefilledContent !== props.content) {
+    setBody(props.content)
+    prefilledContent = props.content
+    setEditingPost(true)
   }
 
   return (

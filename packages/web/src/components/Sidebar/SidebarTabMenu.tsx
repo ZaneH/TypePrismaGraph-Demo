@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment, faHome, faUserFriends } from '@fortawesome/free-solid-svg-icons'
+import { faComment, faHome, faUserFriends, faCog } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ const TabMenu = styled.div`
   padding-bottom: 30px;
 
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 5%;
   grid-gap: 10px;
 
@@ -34,6 +34,9 @@ export default class SidebarTabMenu extends React.Component<SidebarTabMenuProps>
         </NavLink>
         <NavLink to="/app/people" onClick={() => this.props.onChange(2)} className="tab" activeClassName="active">
           <FontAwesomeIcon icon={faUserFriends} />
+        </NavLink>
+        <NavLink to="/app/settings" onClick={() => this.props.onChange(3)} className="tab" activeClassName="active">
+          <FontAwesomeIcon icon={faCog} />
         </NavLink>
       </TabMenu>
     )

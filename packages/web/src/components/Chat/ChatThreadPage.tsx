@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import DetailSidebar, { DetailSidebarContentTypesEnum } from './DetailSidebar'
+import DetailSidebar, { DetailSidebarContentTypesEnum } from '../Sidebar/DetailSidebar'
 import ChatBox from './ChatBox'
 
 import { Chat } from '@phoenix/prisma/node_modules/@generated/photon'
@@ -17,7 +17,7 @@ const Container = styled.div`
 
   /* Compensate for Chatbox & DetailSidebar */
   margin-bottom: 100px;
-  width: 67%;
+  width: 62%;
 
   overflow-wrap: break-word;
 `
@@ -36,11 +36,11 @@ interface ChatThreadProps extends RouteComponentProps {
 const ChatThreadPage = (props: ChatThreadProps) => {
   const { loading, data } = useQuery(CHAT_INFO_QUERY, {
     variables: {
-      id: props.chat ? props.chat.id : '',
+      id: idx(props, (_) => _.chat.id) || '',
     },
   })
 
-  if (props.isAddingChat) {    
+  if (props.isAddingChat) {
     return props.newChat
   }
 
@@ -54,7 +54,7 @@ const ChatThreadPage = (props: ChatThreadProps) => {
         <h1>Chat</h1>
         <ChatTitle>{data.chat && data.chat.name}</ChatTitle>
         <ChatThread messages={data.chat && data.chat.messages} />
-        <DetailSidebar content_type={DetailSidebarContentTypesEnum.CHAT_MEMBERS} data={data.chat.members} />
+        <DetailSidebar chat={data.chat} content_type={DetailSidebarContentTypesEnum.CHAT_MEMBERS} data={data.chat.members} />
         <ChatBox chatId={data.chat.id} />
       </Container>
     )

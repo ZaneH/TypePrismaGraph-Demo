@@ -12,13 +12,13 @@ datasource db {
 }
 
 model Post {
-  id         String   @default(cuid()) @id
-  author     User?
-  content    String
-  createdAt  DateTime @default(now())
-  published  Boolean  @default(value: false)
-  title      String
-  updatedAt  DateTime @updatedAt
+  id        String   @default(cuid()) @id
+  author    User
+  content   String
+  createdAt DateTime @default(now())
+  published Boolean  @default(value: false)
+  title     String
+  updatedAt DateTime @updatedAt
 }
 
 enum MessageType {

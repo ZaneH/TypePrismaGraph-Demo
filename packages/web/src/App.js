@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 
-import SidebarWrapper from './components/SidebarWrapper'
+import SidebarWrapper from './components/Sidebar/SidebarWrapper'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 

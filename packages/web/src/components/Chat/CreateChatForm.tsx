@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { useMutation } from '@apollo/react-hooks'
-import { CREATE_CHAT_MUTATION, CHAT_LIST_QUERY, CREATE_CHATMESSAGE_MUTATION } from '@phoenix/common/constants'
-import idx from 'idx'
+import { CREATE_CHAT_MUTATION, CHAT_LIST_QUERY } from '@phoenix/common/constants'
+import { RouteComponentProps, withRouter } from 'react-router'
 
 const Container = styled.form`
   background-color: white;
@@ -37,6 +37,8 @@ const Submit = styled.button`
   margin-top: 10px;
 
   cursor: pointer;
+
+  font-size: 13px;
 `
 
 const Input = styled.input`
@@ -56,24 +58,14 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
 `
 
-/**
- * Keeps track of the last username that was prefilled into the Chat Form.
- *  I'm sure there's a better way to do this logic, but i dunno
- */
-let prefilled: string = ''
+interface CreateChatForm extends RouteComponentProps {
+  to: string
+}
 
-const CreateChatForm = (props: any) => {
+const CreateChatForm = (props: CreateChatForm) => {
   const [title, setTitle] = useState('')
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState(props.to)
   const [body, setBody] = useState('')
-
-  // preload state if it was provided through props
-  if (!!props.to && prefilled !== props.to) {
-    setUsername(props.to)
-    prefilled = props.to
-  }
-
-  let createdChatId: string = ''
 
   const [_startChat] = useMutation(CREATE_CHAT_MUTATION, {
     refetchQueries: [
@@ -87,42 +79,26 @@ const CreateChatForm = (props: any) => {
     variables: {
       data: {
         name: title,
-        picture: 'https://i.imgur.com/0OXxLN7.png',
+        picture: 'https://i.imgur.com/sSjK3ts.png',
         owner: { connect: { id: localStorage.getItem('user/id') } },
+        isArchived: false,
         members: { connect: [{ username: username }, { id: localStorage.getItem('user/id') }] },
+        messages: {
+          create: { content: body, type: 'TEXT', sender: { connect: { id: localStorage.getItem('user/id') } } },
+        },
       },
     },
-  })
-
-  const [_sendMessage] = useMutation(CREATE_CHATMESSAGE_MUTATION, {
-    variables: {
-      data: {
-        content: body,
-        type: 'TEXT',
-        sender: {
-          connect: {
-            id: localStorage.getItem('user/id'),
-          },
-        },
-        chat: {
-          connect: {
-            id: createdChatId,
-          },
-        },
-      },
+    onCompleted: () => {
+      props.history.push('/')
+      props.history.push('/app/chat', {
+        isAddingChat: false,
+        prefillUsername: ''
+      })
     },
   })
 
   const sendMessage = async () => {
-    // I've 'sent a message' by
-    // 1. Creating the conversation with _startChat
-    // 2. Sending the message with _sendMessage
-    // This ensures a new conversation every time the form is used
-    const res = await _startChat()
-    if (idx(res, (_) => res.data.chat.id)) {
-      createdChatId = res.data.chat.id
-      await _sendMessage()
-    }
+    await _startChat()
   }
 
   const handleSendPressed = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -175,4 +151,4 @@ const CreateChatForm = (props: any) => {
   )
 }
 
-export default CreateChatForm
+export default withRouter(CreateChatForm)

@@ -1,10 +1,7 @@
-// This is how it should be done
-// and then this'll be imported into the index.ts
-
-// import { User } from './User'
-// import { Post } from './Post'
-
-// export const resolvers = {
-//   User,
-//   Post
-// }
+export { default as AuthPayload } from './AuthPayload'
+export { default as Chat } from './Chat'
+export { default as ChatMessage } from './ChatMessage'
+export { default as Mutations } from './Mutations'
+export { default as Post } from './Post'
+export { default as Query } from './Query'
+export { default as User } from './User'
